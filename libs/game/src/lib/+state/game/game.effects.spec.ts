@@ -31,7 +31,7 @@ describe('GameEffects', () => {
 
   describe('init$', () => {
     it('should work', () => {
-      actions = hot('-a-|', { a: GameActions.init() });
+      actions = hot('-a-|', { a: GameActions.init('demoCode') });
 
       const expected = hot('-a-|', {
         a: GameActions.loadGameSuccess({ game: {id: 'demoCode'}}),

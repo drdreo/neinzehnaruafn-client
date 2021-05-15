@@ -66,7 +66,7 @@ describe('GameFacade', () => {
         expect(game).toBeUndefined();
         expect(isLoaded).toBe(false);
 
-        facade.init();
+        facade.init('demoCode');
 
         game = await readFirst(facade.game$);
         isLoaded = await readFirst(facade.loaded$);

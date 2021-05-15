@@ -1,7 +1,10 @@
 import { createAction, props } from '@ngrx/store';
 import { GameEntity } from './game.models';
 
-export const init = createAction('[Game Page] Init');
+export const init = createAction(
+  '[Game Page] Init',
+  (room: string) => ({room}),
+);
 
 export const loadGameSuccess = createAction(
   '[Game/API] Load Game Success',

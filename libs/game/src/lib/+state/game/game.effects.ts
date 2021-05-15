@@ -16,7 +16,7 @@ export class GameEffects {
           //   map(response => GameActions.loadGameSuccess({ game: response.game }))
           // );
           // Your custom service 'load' logic goes here. For now just return a success action...
-          return GameActions.loadGameSuccess({ game: {id: 'demoCode'} });
+          return GameActions.loadGameSuccess({ game: {id: action.room} });
         },
 
         onError: (action, error) => {

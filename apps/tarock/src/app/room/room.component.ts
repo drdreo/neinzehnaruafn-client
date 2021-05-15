@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { GameFacade } from '../../../../../libs/game/src/lib/+state/game/game.facade';
 
 @Component({
   selector: 'trial-nerror-game',
@@ -7,11 +8,15 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./room.component.scss']
 })
 export class RoomComponent implements OnInit {
-  room: string;
 
-  constructor(private route: ActivatedRoute) {}
+  constructor(private route: ActivatedRoute, public gameFacade: GameFacade) {
+
+  }
 
   ngOnInit(): void {
-    this.room = this.route.snapshot.paramMap.get('room');
+    const room = this.route.snapshot.paramMap.get('room');
+
+    this.gameFacade.init(room);
+
   }
 }

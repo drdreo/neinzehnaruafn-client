@@ -21,7 +21,7 @@ export class GameFacade {
    * Use the initialization action to perform one
    * or more tasks in your Effects.
    */
-  init() {
-    this.store.dispatch(GameActions.init());
+  init(room: string) {
+    this.store.dispatch(GameActions.init(room));
   }
 }

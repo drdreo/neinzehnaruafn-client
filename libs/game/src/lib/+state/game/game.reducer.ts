@@ -24,8 +24,8 @@ export const initialState: State = {
 
 const gameReducer = createReducer(
   initialState,
-  on(GameActions.init, (state) => ({ ...state, loaded: false, error: null })),
-  on(GameActions.loadGameSuccess, (state, { game }) => ({ ...state, loaded: true, game })),
+  on(GameActions.init, (state) => ({ ...state, loaded: false })),
+  on(GameActions.loadGameSuccess, (state, { game }) => ({ ...state, loaded: true, error: null, game })),
   on(GameActions.loadGameFailure, (state, { error }) => ({ ...state, error }))
 );
 
