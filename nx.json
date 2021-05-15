@@ -25,6 +25,9 @@
     "tarock-e2e": {
       "tags": [],
       "implicitDependencies": ["tarock"]
+    },
+    "game": {
+      "tags": []
     }
   }
 }

@@ -146,6 +146,31 @@
           }
         }
       }
+    },
+    "game": {
+      "projectType": "library",
+      "root": "libs/game",
+      "sourceRoot": "libs/game/src",
+      "prefix": "trial-nerror",
+      "architect": {
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/game"],
+          "options": {
+            "jestConfig": "libs/game/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/game/src/**/*.ts",
+              "libs/game/src/**/*.html"
+            ]
+          }
+        }
+      }
     }
   }
 }
