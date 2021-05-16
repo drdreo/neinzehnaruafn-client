@@ -1,1 +1,30 @@
-<p>home works!</p>
+<div class='page-container'>
+
+  <img class='brand-logo' src='/assets/images/tarock.jpg' alt='Tarock Icon' />
+
+  <h4 class='brand-title'>Tarock</h4>
+
+  <form class='form' [formGroup]='loginForm' (ngSubmit)='joinGame()'>
+    <input class='input username' placeholder='Name' formControlName='username' required />
+    <div class='room__wrapper'>
+      <input class='input room' placeholder='Room' formControlName='room' required />
+    </div>
+    <button class='button join' type='submit' [disabled]='loginForm.invalid' data-cy='join_button'>Join
+    </button>
+  </form>
+
+  <div class='form__error'>
+    <div *ngIf='username.invalid && username.dirty'>
+      <div *ngIf='username.errors.minlength'>
+        Name must be at least 4 characters long.
+      </div>
+
+    </div>
+
+    <div *ngIf='room.invalid && room.dirty'>
+      <div *ngIf='room.errors.forbiddenName'>
+        Room name is invalid!
+      </div>
+    </div>
+  </div>
+</div>

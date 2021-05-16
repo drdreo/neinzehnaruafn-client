@@ -11,12 +11,12 @@ import * as GameActions from '../game/game.actions';
 import { GameEffects } from '../game/game.effects';
 
 import { GameEntity } from '../game/game.models';
-import { GAME_FEATURE_KEY, State, reducer } from '../game/game.reducer';
+import { GAME_FEATURE_KEY, GameState, reducer } from '../game/game.reducer';
 import { GameFacade } from './game.facade';
 
 
 interface GameSchema {
-  game: State;
+  game: GameState;
 }
 
 describe('GameFacade', () => {

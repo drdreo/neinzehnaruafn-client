@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { GameFacade } from '../../../../../libs/game/src/lib/+state/game/game.facade';
+import { GameFacade, PlayerFacade } from '@trial-nerror/game';
 
 @Component({
   selector: 'trial-nerror-game',
@@ -9,7 +9,7 @@ import { GameFacade } from '../../../../../libs/game/src/lib/+state/game/game.fa
 })
 export class RoomComponent implements OnInit {
 
-  constructor(private route: ActivatedRoute, public gameFacade: GameFacade) {
+  constructor(private route: ActivatedRoute, public gameFacade: GameFacade, public playerFacade: PlayerFacade) {
 
   }
 

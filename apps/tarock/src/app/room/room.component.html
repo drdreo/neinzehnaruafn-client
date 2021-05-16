@@ -1,1 +1,9 @@
-<p>Room: {{ gameFacade.game$ | async  |json}}</p>
+
+<ng-container *ngIf='gameFacade.game$ | ngrxPush as game'>
+  <p>Room: {{game | json}}</p>
+</ng-container>
+
+
+<ng-container *ngIf='playerFacade.player$ | ngrxPush as players'>
+  Players:  {{players | json}}
+</ng-container>

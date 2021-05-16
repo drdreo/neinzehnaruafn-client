@@ -3,7 +3,12 @@ import { GameEntity } from './game.models';
 
 export const init = createAction(
   '[Game Page] Init',
-  (room: string) => ({room}),
+  (room: string) => ({ room })
+);
+
+export const loadGame = createAction(
+  '[Game/API] Load Game',
+  props<{ playerName: string, room: string }>()
 );
 
 export const loadGameSuccess = createAction(

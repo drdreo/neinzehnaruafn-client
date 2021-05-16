@@ -17,10 +17,10 @@ export class GameFacade {
 
   constructor(private store: Store) {}
 
-  /**
-   * Use the initialization action to perform one
-   * or more tasks in your Effects.
-   */
+  loadRoom(playerName: string, room: string) {
+    this.store.dispatch(GameActions.loadGame({ playerName, room }));
+  }
+
   init(room: string) {
     this.store.dispatch(GameActions.init(room));
   }

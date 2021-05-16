@@ -1,6 +1,7 @@
 {
   "version": 1,
   "cli": {
+    "analytics": "220921c9-7155-419b-8cae-a4ff905b1e91",
     "defaultCollection": "@nrwl/angular"
   },
   "defaultProject": "tarock",

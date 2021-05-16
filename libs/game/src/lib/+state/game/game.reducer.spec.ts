@@ -1,6 +1,6 @@
 import * as GameActions from './game.actions';
 import { GameEntity } from './game.models';
-import { State, initialState, reducer } from './game.reducer';
+import { GameState, initialState, reducer } from './game.reducer';
 
 describe('Game Reducer', () => {
   const createGameEntity = (id: string, name = '') =>
@@ -14,7 +14,7 @@ describe('Game Reducer', () => {
       const game = createGameEntity('GAME-AAA');
       const action = GameActions.loadGameSuccess({ game });
 
-      const result: State = reducer(initialState, action);
+      const result: GameState = reducer(initialState, action);
 
       expect(result.loaded).toBe(true);
       expect(result.game).toBeDefined();
