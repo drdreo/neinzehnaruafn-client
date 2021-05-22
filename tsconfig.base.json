@@ -15,7 +15,8 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@trial-nerror/game": ["libs/game/src/index.ts"]
+      "@trial-nerror/game": ["libs/game/src/index.ts"],
+      "@trial-nerror/ui": ["libs/ui/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

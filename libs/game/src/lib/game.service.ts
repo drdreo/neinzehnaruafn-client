@@ -7,11 +7,8 @@ import { map } from 'rxjs/operators';
 
 const BACKEND_API = 'localhost:3000';
 
-
 @Injectable()
 export class GameService {
-
-
   playersUpdated$: Observable<PlayerEntity[]>;
   currentPlayerUpdated$: Observable<string>;
 
@@ -29,10 +26,14 @@ export class GameService {
   }
 
   private fromPlayersUpdate(): Observable<PlayerEntity[]> {
-    return this.socket.fromEvent('players:update').pipe(map((data: any) => data.players));
+    return this.socket
+      .fromEvent('players:update')
+      .pipe(map((data: any) => data.players));
   }
 
   private fromCurrentPlayerUpdate(): Observable<string> {
-    return this.socket.fromEvent('current-player:update').pipe(map((data: any) => data.playerId));
+    return this.socket
+      .fromEvent('current-player:update')
+      .pipe(map((data: any) => data.playerId));
   }
 }

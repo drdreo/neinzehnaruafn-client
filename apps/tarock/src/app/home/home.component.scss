@@ -1,4 +1,4 @@
-@import "../../assets/styles/vars";
+@import '../../assets/styles/vars';
 
 .brand-logo {
   width: 200px;
@@ -8,66 +8,4 @@
   font-size: 24px;
   line-height: 20px;
   margin: 1rem;
-}
-
-.room__wrapper {
-  display: flex;
-  width: 100%;
-  position: relative;
-}
-
-.input {
-  border: none;
-  padding: 0.75rem;
-  box-sizing: border-box;
-
-
-  @include respond-to(tablet) {
-    &.username {
-      border-bottom-right-radius: 0;
-      border-top-right-radius: 0;
-      border-right: 1px dashed #757575;
-    }
-
-    &.room {
-      border-bottom-left-radius: 0;
-      border-top-left-radius: 0;
-    }
-  }
-}
-
-
-.button {
-  &.join {
-    width: 100%;
-
-    @include respond-to(tablet) {
-      width: initial;
-      margin-left: 1rem;
-    }
-  }
-}
-
-.form {
-  .room__wrapper, .username {
-    margin-bottom: 1rem;
-  }
-
-  @include respond-to(tablet) {
-    display: flex;
-    .room__wrapper, .username {
-      margin-bottom: 0;
-    }
-  }
-
-  &__error {
-    color: $danger-color;
-    min-height: 42px;
-  }
-}
-
-.sign-in-form {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
 }

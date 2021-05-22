@@ -1,9 +1,8 @@
+<ui-room-details
+  [name]="(gameFacade.game$ | ngrxPush)?.id"
+  [players]="playerFacade.players$ | ngrxPush"
+></ui-room-details>
 
-<ng-container *ngIf='gameFacade.game$ | ngrxPush as game'>
-  <p>Room: {{game | json}}</p>
-</ng-container>
-
-
-<ng-container *ngIf='playerFacade.player$ | ngrxPush as players'>
-  Players:  {{players | json}}
+<ng-container *ngIf="gameFacade.error$ | ngrxPush as error">
+  {{ error.message }}
 </ng-container>

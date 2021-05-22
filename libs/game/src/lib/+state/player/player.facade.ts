@@ -5,11 +5,11 @@ import * as PlayerSelectors from '../player/player.selectors';
 
 @Injectable()
 export class PlayerFacade {
-
-  player$ = this.store.pipe(select(PlayerSelectors.getAllPlayer));
-  currentPlayerId$ = this.store.pipe(select(PlayerSelectors.getCurrentPlayerId));
+  players$ = this.store.pipe(select(PlayerSelectors.getAllPlayer));
+  currentPlayerId$ = this.store.pipe(
+    select(PlayerSelectors.getCurrentPlayerId)
+  );
   currentPlayer$ = this.store.pipe(select(PlayerSelectors.getCurrentPlayer));
 
   constructor(private store: Store) {}
-
 }

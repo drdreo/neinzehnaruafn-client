@@ -1,0 +1,34 @@
+<form class="form" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+  <input
+    class="input username"
+    placeholder="Name"
+    formControlName="username"
+    required
+  />
+  <input
+    class="input room"
+    placeholder="Room"
+    formControlName="room"
+    required
+  />
+  <button
+    class="button join"
+    type="submit"
+    [disabled]="loginForm.invalid"
+    data-cy="join_button"
+  >
+    Join
+  </button>
+</form>
+
+<div class="form__error">
+  <div *ngIf="username.invalid && username.dirty">
+    <div *ngIf="username.errors.minlength">
+      Name must be at least 4 characters long.
+    </div>
+  </div>
+
+  <div *ngIf="room.invalid && room.dirty">
+    <div *ngIf="room.errors.forbiddenName">Room name is invalid!</div>
+  </div>
+</div>

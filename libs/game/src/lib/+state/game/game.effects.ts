@@ -23,7 +23,7 @@ export class GameEffects {
         onError: (action, error) => {
           console.error('Error', error);
           return GameActions.loadGameFailure({ error });
-        }
+        },
       })
     )
   );
@@ -33,24 +33,28 @@ export class GameEffects {
       ofType(GameActions.loadGame),
       fetch({
         run: (action) => {
-          return this.gameService.loadGame(action.playerName, action.room).pipe(
-            map(game => GameActions.loadGameSuccess({ game }))
-          );
+          return this.gameService
+            .loadGame(action.playerName, action.room)
+            .pipe(map((game) => GameActions.loadGameSuccess({ game })));
         },
         onError: (action, error) => {
           console.error('Error', error);
           return GameActions.loadGameFailure({ error });
-        }
+        },
       })
     )
   );
 
-  gameLoadSuccess$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(GameActions.loadGameSuccess),
-      tap(({ game }) => this.router.navigate(['room', game.id]))
-    )
-  );
+  // gameLoadSuccess$ = createEffect(() =>
+  //   this.actions$.pipe(
+  //     ofType(GameActions.loadGameSuccess),
+  //     tap(({ game }) => this.router.navigate(['room', game.id]))
+  //   )
+  // );
 
-  constructor(private router: Router, private actions$: Actions, private gameService: GameService) {}
+  constructor(
+    private router: Router,
+    private actions$: Actions,
+    private gameService: GameService
+  ) {}
 }
