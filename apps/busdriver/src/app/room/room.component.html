@@ -1,0 +1,8 @@
+
+<div *ngIf='room'>
+  Room {{room}}
+  Players: {{ busdriver.allPlayers$ | async | json}}
+</div>
+
+
+<button (click)="startGame()">Start</button>

@@ -31,6 +31,19 @@
     },
     "ui": {
       "tags": []
+    },
+    "busdriver-api": {
+      "tags": []
+    },
+    "busdriver": {
+      "tags": []
+    },
+    "busdriver-e2e": {
+      "tags": [],
+      "implicitDependencies": ["busdriver"]
+    },
+    "busdriver-core": {
+      "tags": []
     }
   }
 }
