@@ -1,8 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
+import { Game } from './game';
 import { Player } from './player';
-
-class Game {
-}
 
 export class Room {
   players: Player[] = [];
@@ -38,13 +36,16 @@ export class Room {
     return !!this.game;
   }
 
-  newGame() {
+  startGame() {
     if (this.players.length < 1) {
       throw new Error('Cant start game. Too less players are in.');
     }
 
     this.resetRoom();
+    this.newGame();
+  }
 
+  newGame() {
     this.game = new Game();
   }
 

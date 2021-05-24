@@ -1,4 +1,5 @@
 import { Injectable, Logger, HttpException, HttpStatus } from '@nestjs/common';
+import { Player } from './player';
 import { Room } from './room';
 
 class GameStartedError extends Error {
@@ -27,11 +28,11 @@ export class BusdriverService {
     return this.rooms.find(room => room.players.some(player => player.id === playerID));
   }
 
-  getPlayersUpdate(room: string) {
+  getPlayersUpdate(room: string): Player[] {
     return this.getRoom(room).getPlayers();
   }
 
-  private addRoom(roomName: string) {
+  private addRoom(roomName: string): Room {
     const room = new Room(roomName);
     this.rooms.push(room);
     return room;
@@ -66,7 +67,6 @@ export class BusdriverService {
       }
 
     }
-
 
     // inform everyone what someone joined
     const players = this.getRoom(sanitizedRoom).getPlayers();
@@ -134,7 +134,7 @@ export class BusdriverService {
     if (room.hasGame()) {
       this.logger.warn(`Room[${ roomName }] has already a game in progress!`);
     } else {
-      room.newGame();
+      room.startGame();
     }
   }
 
