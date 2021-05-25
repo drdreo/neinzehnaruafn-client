@@ -10,6 +10,13 @@ export class Room {
   constructor(public name: string) {
   }
 
+  private resetRoom() {
+    this.game = null;
+
+    this.players.map(player => player.reset());
+  }
+
+
   addPlayer(username: string): string {
     const id = uuidv4();
     this.players.push(new Player(id, username));
@@ -53,10 +60,9 @@ export class Room {
     this.resetRoom();
   }
 
-  private resetRoom() {
-    this.game = null;
 
-    this.players.map(player => player.reset());
+  playerGuess(guess: any) {
+    this.game.turnCurrentCard();
   }
 
 }

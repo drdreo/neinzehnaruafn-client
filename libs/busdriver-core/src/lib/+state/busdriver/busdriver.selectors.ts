@@ -44,3 +44,9 @@ export const getCurrentPlayer = createSelector(
   getCurrentPlayerId,
   (entities, currentId) => currentId && entities[currentId]
 );
+
+
+export const getPyramid = createSelector(
+  getBusdriverState,
+  (state: State) => state.pyramid
+);

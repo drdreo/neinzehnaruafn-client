@@ -15,6 +15,7 @@ export class BusdriverFacade {
   error$ = this.store.pipe(select(BusdriverSelectors.getBusdriverError));
   allPlayers$ = this.store.pipe(select(BusdriverSelectors.getAllPlayers));
   currentPlayer$ = this.store.pipe(select(BusdriverSelectors.getCurrentPlayer));
+  pyramid$ = this.store.pipe(select(BusdriverSelectors.getPyramid));
 
   constructor(private store: Store) {}
 
@@ -30,7 +31,8 @@ export class BusdriverFacade {
     this.store.dispatch(BusdriverActions.startGame());
   }
 
-  updatePlayers(players: []) {
-    this.store.dispatch(BusdriverActions.playersUpdate({ players }));
+  guess() {
+    this.store.dispatch(BusdriverActions.guess({ guess: 'higher' }));
   }
+
 }

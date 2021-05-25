@@ -1,5 +1,6 @@
 import { EntityState, EntityAdapter, createEntityAdapter } from '@ngrx/entity';
 import { createReducer, on, Action } from '@ngrx/store';
+import { Card } from '../../card';
 
 import * as BusdriverActions from './busdriver.actions';
 import { PlayerEntity } from './busdriver.models';
@@ -11,6 +12,7 @@ export interface State extends EntityState<PlayerEntity> {
   loaded: boolean; // has the Busdriver data been loaded
   room?: string
   error?: Error | string | null; // last known error (if any)
+  pyramid?: Card[][];
 }
 
 export interface BusdriverPartialState {
@@ -40,7 +42,11 @@ const busdriverReducer = createReducer(
   })),
   on(BusdriverActions.playersUpdate, (state, { players }) =>
     playerAdapter.setAll(players, { ...state })
-  )
+  ),
+  on(BusdriverActions.pyramidUpdate, (state, { pyramid }) => ({
+    ...state,
+    pyramid
+  })),
 );
 
 export function reducer(state: State | undefined, action: Action) {

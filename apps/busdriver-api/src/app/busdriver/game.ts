@@ -1,8 +1,4 @@
-interface Card {
-  figure: string;
-  value: string;
-  shown: boolean;
-}
+import { Card } from '@trial-nerror/busdriver-core';
 
 export class Game {
 
@@ -35,7 +31,7 @@ export class Game {
     }
   }
 
-  turnCard(row, column) {
+  private turnCard(row, column) {
     this.pyramid[row][column].shown = true;
   }
 

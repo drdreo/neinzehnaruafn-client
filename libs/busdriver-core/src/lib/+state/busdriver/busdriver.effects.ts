@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { createEffect, Actions, ofType } from '@ngrx/effects';
 import { fetch } from '@nrwl/angular';
-import { SocketService } from '@trial-nerror/busdriver-core';
 import { map, tap } from 'rxjs/operators';
 import { HttpService } from '../../http.service';
+import { SocketService } from '../../socket.service';
 import * as BusdriverActions from './busdriver.actions';
 
 @Injectable()
@@ -58,9 +58,22 @@ export class BusdriverEffects {
     { dispatch: false }
   );
 
+  guess$ = createEffect(() =>
+      this.actions$.pipe(
+        ofType(BusdriverActions.guess),
+        tap(() => this.socketService.guess())
+      ),
+    { dispatch: false }
+  );
+
   playersUpdate$ = createEffect(() =>
     this.socketService.onPlayersUpdate()
         .pipe(map((players) => BusdriverActions.playersUpdate({ players })))
+  );
+
+  pyramidUpdate$ = createEffect(() =>
+    this.socketService.onPyramidUpdate()
+        .pipe(map((pyramid) => BusdriverActions.pyramidUpdate({ pyramid })))
   );
 
   constructor(private actions$: Actions, private router: Router, private httpService: HttpService, private socketService: SocketService) {}

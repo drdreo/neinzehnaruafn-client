@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Socket } from 'ngx-socket-io';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { PlayerEvent } from './player-events';
 
 
 @Injectable()
@@ -15,14 +16,23 @@ export class SocketService {
   }
 
   startGame() {
-    this.socket.emit('player:start');
-  }
-
-  onPlayersUpdate(): Observable<any> {
-    return this.socket.fromEvent<any>('players:update').pipe(map(res => res.players));
+    this.socket.emit(PlayerEvent.StartGame);
   }
 
   leave() {
-    return this.socket.emit('player:leave');
+    return this.socket.emit(PlayerEvent.Leave);
   }
+
+  guess() {
+    return this.socket.emit(PlayerEvent.Guess);
+  }
+
+  onPlayersUpdate(): Observable<any> {
+    return this.socket.fromEvent<any>(PlayerEvent.Update).pipe(map(res => res.players));
+  }
+
+  onPyramidUpdate(): Observable<any> {
+    return this.socket.fromEvent<any>('pyramid:update').pipe(map(res => res.pyramid));
+  }
+
 }

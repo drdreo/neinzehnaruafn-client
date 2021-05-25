@@ -1,17 +1,11 @@
 import { Logger } from '@nestjs/common';
 import {
-  WebSocketGateway, WebSocketServer, OnGatewayConnection, OnGatewayDisconnect, SubscribeMessage, ConnectedSocket
+  WebSocketGateway, WebSocketServer, OnGatewayConnection, OnGatewayDisconnect, SubscribeMessage, ConnectedSocket, MessageBody
 } from '@nestjs/websockets';
+import { PlayerEvent } from '@trial-nerror/busdriver-core';
 import { Server, Socket } from 'socket.io';
 import { BusdriverService } from './busdriver.service';
-
-enum PlayerEvent {
-  Leave = 'player:leave',
-  StartGame = 'player:start'
-}
-
-// interface ServerJoined {
-// }
+import { Room } from './room';
 
 @WebSocketGateway(1234)
 export class BusdriverGateway implements OnGatewayConnection, OnGatewayDisconnect {
@@ -46,7 +40,7 @@ export class BusdriverGateway implements OnGatewayConnection, OnGatewayDisconnec
       this.busdriverService.playerLeft(playerID);
 
       if (room) {
-        this.sendTo(room, 'player:left', { playerID });
+        this.sendTo(room, PlayerEvent.Left, { playerID });
       } else {
         this.logger.error(`Player[${ playerID }] disconnected or left, but room[${ room }] no longer exists!`);
       }
@@ -84,11 +78,32 @@ export class BusdriverGateway implements OnGatewayConnection, OnGatewayDisconnec
 
   @SubscribeMessage(PlayerEvent.StartGame)
   onPlayerStart(@ConnectedSocket() socket: Socket) {
-    this.logger.debug(`Player[${  socket['playerID'] }] started the game!`);
+    const playerID = socket['playerID'];
+    this.logger.debug(`Player[${ playerID }] started the game!`);
+    const room = this.busdriverService.getRoomOfPlayer(playerID);
 
+    room.startGame();
+    this.sendPyramidUpdate(room);
+  }
+
+  @SubscribeMessage(PlayerEvent.Guess)
+  onPlayerGuess(@ConnectedSocket() socket: Socket, @MessageBody() guess: string) {
+    const playerID = socket['playerID'];
+    this.logger.debug(`Player[${ playerID }] guessed!`);
+    this.logger.debug(guess);
+
+    const room = this.busdriverService.getRoomOfPlayer(playerID);
+
+    room.playerGuess(guess);
+    this.sendPyramidUpdate(room);
   }
 
   private sendPlayersUpdate(room: string) {
-    this.sendTo(room, 'players:update', { players: this.busdriverService.getPlayersUpdate(room) });
+    this.sendTo(room, PlayerEvent.Update, { players: this.busdriverService.getPlayersUpdate(room) });
+  }
+
+  private sendPyramidUpdate(room: Room) {
+    const pyramid = room.getGame().getPyramid();
+    this.sendTo(room.name, 'pyramid:update', { pyramid });
   }
 }

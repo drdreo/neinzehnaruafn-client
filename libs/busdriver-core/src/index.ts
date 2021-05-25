@@ -5,3 +5,6 @@ export * from './lib/+state/busdriver/busdriver.models';
 export * from './lib/+state/busdriver/busdriver.facade';
 export * from './lib/busdriver-core.module';
 export * from './lib/socket.service';
+export * from './lib/http.service';
+export * from './lib/card';
+export * from './lib/player-events';

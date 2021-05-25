@@ -32,4 +32,8 @@ export class RoomComponent implements OnInit, OnDestroy {
   startGame() {
     this.busdriver.startGame();
   }
+
+  guess() {
+    this.busdriver.guess();
+  }
 }
