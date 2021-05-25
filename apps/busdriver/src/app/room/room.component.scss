@@ -1,0 +1,36 @@
+@import '../../assets/styles/vars';
+
+.controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.pyramid {
+  width: 100%;
+  display: flex;
+  flex-direction: column-reverse;
+
+  .row {
+    @include respond-to(tablet) {
+      height: 200px;
+    }
+
+    display: flex;
+
+    .entry {
+      border: 1px solid;
+      flex: 1 1 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+
+      @include respond-to(tablet) {
+        ui-card {
+          transform: scale(1.5);
+        }
+      }
+    }
+  }
+}

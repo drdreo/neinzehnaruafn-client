@@ -36,4 +36,20 @@ export class RoomComponent implements OnInit, OnDestroy {
   guess() {
     this.busdriver.guess();
   }
+
+  renderPyramid(){
+    // for (let i = pyramid.length - 1; i >= 0; i--) {
+    //   let output = '';
+    //   for (let j = 0; j < pyramid[i].length; j++) {
+    //     const entry = pyramid[i][j];
+    //     if (entry) {
+    //       output += (entry.value + entry.figure).padStart(3, ' ');
+    //     } else {
+    //       output += '[ ]';
+    //     }
+    //     output += ' ';
+    //   }
+    //   console.log(output);
+    // }
+  }
 }

@@ -1,9 +1,20 @@
-
 <div *ngIf='room'>
   Room {{room}}
   Players: {{ busdriver.allPlayers$ | async | json}}
 </div>
 
 
-<button (click)="startGame()">Start</button>
-<button (click)="guess()">Guess</button>
+<table class='pyramid' *ngIf='busdriver.pyramid$ | async as pyramid'>
+  <ng-container *ngFor='let row of pyramid; let i = index'>
+    <tr class='row'>
+      <td class='entry' *ngFor='let column of row'>
+        <ui-card *ngIf='column' [value]='column.value' [figure]='column.figure'></ui-card>
+      </td>
+    </tr>
+  </ng-container>
+</table>
+
+<div class='controls'>
+  <button class='button' (click)='startGame()'>Start</button>
+  <button class='button' (click)='guess()'>Guess</button>
+</div>

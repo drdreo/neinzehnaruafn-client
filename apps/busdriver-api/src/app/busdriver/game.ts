@@ -88,7 +88,7 @@ export class Game {
         if (entry.shown) {
           return entry;
         }
-        return { value: 'X', figure: 'X' };
+        return { value: 'X', figure: 'back' };
       }
       return undefined;
     }));
