@@ -1,4 +1,4 @@
-import { Card } from '@trial-nerror/busdriver-core';
+import { Card, createDeck, Guess, ColorGuess, ValueGuess, PositionGuess, FigureGuess } from '@trial-nerror/busdriver-core';
 
 export class Game {
 
@@ -7,39 +7,42 @@ export class Game {
   currentPosition = [0, 0];
 
   constructor() {
-    this.fillDeck();
-    this.fillDeck();
+    this.pushDeck();
+    this.pushDeck();
     this.initPyramid();
   }
 
-  fillDeck() {
-    const figures = ['S', 'H', 'D', 'C'];
-    const values = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'];
-
-    figures.forEach((figure) => {
-      values.forEach(value => {
-        this.deck.push({ value, figure, shown: false });
-      });
-    });
-
-    // shuffle the deck array with Fisher-Yates
-    for (let i = 0; i < this.deck.length; i++) {
-      const j = Math.floor(Math.random() * (i + 1));
-      const tmp = this.deck[i];
-      this.deck[i] = this.deck[j];
-      this.deck[j] = tmp;
-    }
+  private hasCardsLeft() {
+    return this.pyramid[this.pyramid.length - 1].some(card => !card.shown);
   }
 
-  private turnCard(row, column) {
-    this.pyramid[row][column].shown = true;
+  private pushDeck() {
+    this.deck.push(...createDeck());
+  }
+
+  private isCurrentPositionACard() {
+    const [row, column] = this.currentPosition;
+    return !!this.pyramid[row][column];
+  }
+
+  getCard(row: number, column: number): Card | undefined {
+    return this.pyramid[row][column];
+  }
+
+  getCurrentCard(): Card {
+    const [row, column] = this.currentPosition;
+    return this.getCard(row, column);
+  }
+
+  getCurrentRow(): number {
+    const [row] = this.currentPosition;
+    return row;
   }
 
   turnCurrentCard() {
-    const [row, column] = this.currentPosition;
-    this.turnCard(row, column);
+    this.getCurrentCard().shown = true;
 
-    if(this.hasCardsLeft()){
+    if (this.hasCardsLeft()) {
       this.nextPosition();
     }
   }
@@ -56,12 +59,7 @@ export class Game {
     } while (!this.isCurrentPositionACard());
   }
 
-  private isCurrentPositionACard() {
-    const [row, column] = this.currentPosition;
-    return !!this.pyramid[row][column];
-  }
-
-  initPyramid(size = 4) {
+  private initPyramid(size = 4) {
     const columns = size * 2 - 1;
 
     // init matrix
@@ -78,11 +76,9 @@ export class Game {
         }
       }
     }
-
   }
 
   getPyramid() {
-
     return this.pyramid.map(row => row.map(entry => {
       if (entry) {
         if (entry.shown) {
@@ -95,7 +91,6 @@ export class Game {
   }
 
   printPyramid() {
-
     const pyramid = this.getPyramid();
 
     for (let i = pyramid.length - 1; i >= 0; i--) {
@@ -113,7 +108,20 @@ export class Game {
     }
   }
 
-  private hasCardsLeft() {
-    return this.pyramid[this.pyramid.length-1].some(card => !card.shown);
+  getGuesses(): Guess[] {
+    const row = this.getCurrentRow();
+    switch (row) {
+      case 0:
+        return ['red', 'black'] as ColorGuess[];
+      case 1:
+        return ['higher', 'lower'] as ValueGuess[];
+      case 2:
+        return ['inside', 'outside', 'equal'] as PositionGuess[];
+      case 3:
+        return ['have', 'miss'] as FigureGuess[];
+      default:
+        return ['red', 'black'] as ColorGuess[];
+    }
+
   }
 }

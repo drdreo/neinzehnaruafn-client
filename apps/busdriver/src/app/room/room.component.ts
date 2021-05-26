@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { BusdriverFacade } from '@trial-nerror/busdriver-core';
+import { BusdriverFacade, Guess } from '@trial-nerror/busdriver-core';
 
 
 @Component({
@@ -33,8 +33,8 @@ export class RoomComponent implements OnInit, OnDestroy {
     this.busdriver.startGame();
   }
 
-  guess() {
-    this.busdriver.guess();
+  onGuess(guess: Guess) {
+    this.busdriver.guess(guess);
   }
 
   renderPyramid(){

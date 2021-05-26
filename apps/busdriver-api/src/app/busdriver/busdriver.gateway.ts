@@ -1,8 +1,8 @@
 import { Logger } from '@nestjs/common';
 import {
-  WebSocketGateway, WebSocketServer, OnGatewayConnection, OnGatewayDisconnect, SubscribeMessage, ConnectedSocket, MessageBody
+  WebSocketGateway, WebSocketServer, OnGatewayConnection, OnGatewayDisconnect, SubscribeMessage, ConnectedSocket, MessageBody, WsException
 } from '@nestjs/websockets';
-import { PlayerEvent } from '@trial-nerror/busdriver-core';
+import { PlayerEvent, Guess } from '@trial-nerror/busdriver-core';
 import { Server, Socket } from 'socket.io';
 import { BusdriverService } from './busdriver.service';
 import { Room } from './room';
@@ -70,10 +70,10 @@ export class BusdriverGateway implements OnGatewayConnection, OnGatewayDisconnec
   @SubscribeMessage(PlayerEvent.Leave)
   onPlayerLeave(@ConnectedSocket() socket: Socket) {
     const playerID = socket['playerID'];
-    const roomName = this.busdriverService.getRoomOfPlayer(playerID).name;
-    this.handlePlayerDisconnect(playerID, roomName);
-    this.disconnectSocket(socket, roomName);
-    this.sendPlayersUpdate(roomName);
+    const room = this.busdriverService.getRoomOfPlayer(playerID);
+    this.handlePlayerDisconnect(playerID, room.name);
+    this.disconnectSocket(socket, room.name);
+    this.sendPlayersUpdate(room);
   }
 
   @SubscribeMessage(PlayerEvent.StartGame)
@@ -84,26 +84,57 @@ export class BusdriverGateway implements OnGatewayConnection, OnGatewayDisconnec
 
     room.startGame();
     this.sendPyramidUpdate(room);
+    this.sendPlayersUpdate(room);
+    this.sendGameGuessesUpdate(room);
   }
 
   @SubscribeMessage(PlayerEvent.Guess)
-  onPlayerGuess(@ConnectedSocket() socket: Socket, @MessageBody() guess: string) {
+  onPlayerGuess(@ConnectedSocket() socket: Socket, @MessageBody() guess: Guess) {
     const playerID = socket['playerID'];
-    this.logger.debug(`Player[${ playerID }] guessed!`);
-    this.logger.debug(guess);
+    this.logger.debug(`Player[${ playerID }] guessed ${ guess }!`);
 
     const room = this.busdriverService.getRoomOfPlayer(playerID);
+    const currentRow = room.getGame().getCurrentRow();
+    let response: string;
 
-    room.playerGuess(guess);
+    try {
+      response = room.playerGuess(playerID, guess);
+    } catch (err) {
+      console.error(err);
+      throw new WsException(err.message);
+    }
+
+    if (currentRow !== room.getGame().getCurrentRow()) {
+      this.sendGameGuessesUpdate(room);
+    }
     this.sendPyramidUpdate(room);
+    this.sendPlayersUpdate(room);
+    this.sendPlayerGuessResponse(room.name, response);
   }
 
-  private sendPlayersUpdate(room: string) {
-    this.sendTo(room, PlayerEvent.Update, { players: this.busdriverService.getPlayersUpdate(room) });
+  private sendPlayersUpdate(roomOrName: Room | string) {
+    let room;
+    if (typeof roomOrName === 'string') {
+      room = this.busdriverService.getRoom(roomOrName);
+    } else {
+      room = roomOrName;
+    }
+
+    const players = room.getPlayers();
+    this.sendTo(room.name, PlayerEvent.Update, { players });
   }
 
   private sendPyramidUpdate(room: Room) {
     const pyramid = room.getGame().getPyramid();
     this.sendTo(room.name, 'pyramid:update', { pyramid });
+  }
+
+  private sendGameGuessesUpdate(room: Room) {
+    const guesses = room.getGame().getGuesses();
+    this.sendTo(room.name, 'guess:update', { guesses });
+  }
+
+  private sendPlayerGuessResponse(room: string, response) {
+    this.sendTo(room, PlayerEvent.Guess, response);
   }
 }

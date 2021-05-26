@@ -45,8 +45,18 @@ export const getCurrentPlayer = createSelector(
   (entities, currentId) => currentId && entities[currentId]
 );
 
-
 export const getPyramid = createSelector(
   getBusdriverState,
   (state: State) => state.pyramid
+);
+
+export const getGuesses = createSelector(
+  getBusdriverState,
+  (state: State) => state.guesses
+);
+
+
+export const getMessage = createSelector(
+  getBusdriverState,
+  (state: State) => state.message
 );

@@ -3,6 +3,10 @@
   Players: {{ busdriver.allPlayers$ | async | json}}
 </div>
 
+<div *ngIf='busdriver.message$ | async as message'>
+  {{message}}
+</div>
+
 
 <table class='pyramid' *ngIf='busdriver.pyramid$ | async as pyramid'>
   <ng-container *ngFor='let row of pyramid; let i = index'>
@@ -16,5 +20,8 @@
 
 <div class='controls'>
   <button class='button' (click)='startGame()'>Start</button>
-  <button class='button' (click)='guess()'>Guess</button>
+
+  <div class='guess' *ngIf='busdriver.guesses$ | async as guesses'>
+    <button class='button' (click)='onGuess(guess)' *ngFor='let guess of guesses'>{{guess | uppercase}}</button>
+  </div>
 </div>

@@ -1,10 +1,17 @@
 import { createAction, props } from '@ngrx/store';
-import { Card } from '../../card';
+import { Card, Guess } from '../../card';
 import { PlayerEntity } from './busdriver.models';
 
 export const leave = createAction('[Busdriver/API] Player Leave');
 export const join = createAction('[Busdriver/API] Player Join', props<{ username: string, room: string }>());
-export const guess = createAction('[Busdriver/API] Player Guess', props<{ guess: any }>());
+export const guess = createAction('[Busdriver/API] Player Guess', props<{ guess: Guess }>());
+
+
+export const guessResponse = createAction(
+  '[Busdriver/API] Guess Response',
+  props<{ message: string }>()
+);
+
 
 export const joinBusdriverSuccess = createAction(
   '[Busdriver/API] Load Busdriver Success',
@@ -26,4 +33,9 @@ export const playersUpdate = createAction(
 export const pyramidUpdate = createAction(
   '[Busdriver/API] Pyramid Update',
   props<{ pyramid: Card[][] }>()
+);
+
+export const guessesUpdate = createAction(
+  '[Busdriver/API] Guesses Update',
+  props<{ guesses: Guess[] }>()
 );

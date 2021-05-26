@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
 
 import { select, Store } from '@ngrx/store';
+import { Guess } from '../../card';
 
 import * as BusdriverActions from './busdriver.actions';
+import { getMessage } from './busdriver.selectors';
 import * as BusdriverSelectors from './busdriver.selectors';
 
 @Injectable()
@@ -16,6 +18,8 @@ export class BusdriverFacade {
   allPlayers$ = this.store.pipe(select(BusdriverSelectors.getAllPlayers));
   currentPlayer$ = this.store.pipe(select(BusdriverSelectors.getCurrentPlayer));
   pyramid$ = this.store.pipe(select(BusdriverSelectors.getPyramid));
+  guesses$ = this.store.pipe(select(BusdriverSelectors.getGuesses));
+  message$ = this.store.pipe(select(BusdriverSelectors.getMessage));
 
   constructor(private store: Store) {}
 
@@ -31,8 +35,8 @@ export class BusdriverFacade {
     this.store.dispatch(BusdriverActions.startGame());
   }
 
-  guess() {
-    this.store.dispatch(BusdriverActions.guess({ guess: 'higher' }));
+  guess(guess: Guess) {
+    this.store.dispatch(BusdriverActions.guess({ guess }));
   }
 
 }

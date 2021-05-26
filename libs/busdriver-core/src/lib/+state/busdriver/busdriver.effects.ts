@@ -61,10 +61,16 @@ export class BusdriverEffects {
   guess$ = createEffect(() =>
       this.actions$.pipe(
         ofType(BusdriverActions.guess),
-        tap(() => this.socketService.guess())
+        tap((action) => this.socketService.guess(action.guess))
       ),
     { dispatch: false }
   );
+
+  guessResponse$ = createEffect(() =>
+    this.socketService.onGuess()
+        .pipe(map((message) => BusdriverActions.guessResponse({ message })))
+  );
+
 
   playersUpdate$ = createEffect(() =>
     this.socketService.onPlayersUpdate()
@@ -74,6 +80,11 @@ export class BusdriverEffects {
   pyramidUpdate$ = createEffect(() =>
     this.socketService.onPyramidUpdate()
         .pipe(map((pyramid) => BusdriverActions.pyramidUpdate({ pyramid })))
+  );
+
+  guessesUpdate$ = createEffect(() =>
+    this.socketService.onGuessesUpdate()
+        .pipe(map((guesses) => BusdriverActions.guessesUpdate({ guesses })))
   );
 
   constructor(private actions$: Actions, private router: Router, private httpService: HttpService, private socketService: SocketService) {}
